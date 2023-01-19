@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import me.songha.tutorial.oauth.domain.ProviderType;
 import me.songha.tutorial.oauth.domain.RoleType;
 
@@ -14,7 +13,6 @@ import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

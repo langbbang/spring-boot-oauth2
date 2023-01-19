@@ -6,6 +6,7 @@ import me.songha.tutorial.oauth.domain.RoleType;
 import me.songha.tutorial.oauth.exception.CustomAuthenticationEntryPoint;
 import me.songha.tutorial.oauth.filter.JwtSecurityConfig;
 import me.songha.tutorial.oauth.handler.CustomAccessDeniedHandler;
+import me.songha.tutorial.oauth.handler.OAuth2AuthenticationFailureHandler;
 import me.songha.tutorial.oauth.handler.OAuth2AuthenticationSuccessHandler;
 import me.songha.tutorial.oauth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import me.songha.tutorial.oauth.service.CustomOAuth2UserService;
@@ -108,13 +109,11 @@ public class SecurityConfig {
                 .userInfoEndpoint()
                 .userService(oAuth2UserService)
 
-                //successhandler는 정상적으로 유저가 잘 인증되어 등록되면 실행되는 클래스
                 // 엑세스 토큰과 리프레시 토큰을 유저정보를 바탕으로 생성하여 프론트에 전달
                 .and()
-                .successHandler(oAuth2AuthenticationSuccessHandler())
-//                .failureHandler(oAuth2AuthenticationFailureHandler());
+                .successHandler(oAuth2AuthenticationSuccessHandler()) // 정상적으로 유저가 잘 인증되어 등록되면 실행되는 클래스
+                .failureHandler(oAuth2AuthenticationFailureHandler());// 인증에 실패하였을 경우 실행되는 클래스
 
-        ;
         // JwtFilter를 addFilter로 등록했던 JwtSecurityConfig 적용
         httpSecurity.apply(new JwtSecurityConfig(tokenProvider));
 
@@ -134,6 +133,11 @@ public class SecurityConfig {
                 userRefreshTokenRepository,
                 oAuth2AuthorizationRequestBasedOnCookieRepository()
         );
+    }
+
+    @Bean
+    public OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler() {
+        return new OAuth2AuthenticationFailureHandler(oAuth2AuthorizationRequestBasedOnCookieRepository());
     }
 
     @Bean
