@@ -95,4 +95,12 @@ public class User {
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
     }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
 }
