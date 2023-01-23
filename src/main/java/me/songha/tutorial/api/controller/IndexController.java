@@ -10,7 +10,7 @@ public class IndexController {
     @GetMapping("/")
     public ModelAndView index(ModelAndView modelAndView) {
         modelAndView.setViewName("index");
-        CookieUtil.addCookie();
+//        CookieUtil.addCookie();
         return modelAndView;
     }
 

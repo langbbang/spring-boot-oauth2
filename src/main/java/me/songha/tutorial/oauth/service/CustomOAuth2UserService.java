@@ -26,6 +26,10 @@ import java.time.LocalDateTime;
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private final UserRepository userRepository;
 
+    /**
+     * Oauth2 인증 방식으로 회원가입 시 동작하는 메소드
+     * USER 테이블에 계정 정보 저장
+     */
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User user = super.loadUser(userRequest);
