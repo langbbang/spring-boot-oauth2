@@ -2,21 +2,26 @@ package me.songha.tutorial.api.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.songha.tutorial.oauth.domain.ProviderType;
 import me.songha.tutorial.oauth.domain.RoleType;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "USERS")
+@EntityListeners(AuditingEntityListener.class)
 public class User {
     @JsonIgnore
     @Id
@@ -65,14 +70,17 @@ public class User {
     @NotNull
     private RoleType roleType;
 
-    @Column(name = "CREATED_AT")
+    @CreatedDate
+    @Column(name = "CREATED_AT", updatable = false)
     @NotNull
-    private LocalDateTime createdAt;
+    private ZonedDateTime createdAt;
 
+    @LastModifiedDate
     @Column(name = "MODIFIED_AT")
     @NotNull
-    private LocalDateTime modifiedAt;
+    private ZonedDateTime modifiedAt;
 
+    @Builder
     public User(
             @NotNull @Size(max = 64) String userId,
             @NotNull @Size(max = 100) String username,
@@ -80,9 +88,7 @@ public class User {
             @NotNull @Size(max = 1) String emailVerifiedYn,
             @NotNull @Size(max = 512) String profileImageUrl,
             @NotNull ProviderType providerType,
-            @NotNull RoleType roleType,
-            @NotNull LocalDateTime createdAt,
-            @NotNull LocalDateTime modifiedAt
+            @NotNull RoleType roleType
     ) {
         this.userId = userId;
         this.username = username;
@@ -92,8 +98,6 @@ public class User {
         this.profileImageUrl = profileImageUrl != null ? profileImageUrl : "";
         this.providerType = providerType;
         this.roleType = roleType;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
     }
 
     public void setUsername(String username) {

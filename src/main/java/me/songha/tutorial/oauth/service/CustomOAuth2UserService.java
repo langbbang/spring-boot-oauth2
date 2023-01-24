@@ -18,8 +18,6 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -68,18 +66,15 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private User createUser(OAuth2UserInfo userInfo, ProviderType providerType) {
-        LocalDateTime now = LocalDateTime.now();
-        User user = new User(
-                userInfo.getId(),
-                userInfo.getName(),
-                userInfo.getEmail(),
-                "Y",
-                userInfo.getImageUrl(),
-                providerType,
-                RoleType.USER,
-                now,
-                now
-        );
+        User user = User.builder()
+                .userId(userInfo.getId())
+                .username(userInfo.getName())
+                .email(userInfo.getEmail())
+                .emailVerifiedYn("Y")
+                .profileImageUrl(userInfo.getImageUrl())
+                .providerType(providerType)
+                .roleType(RoleType.USER)
+                .build();
 
         return userRepository.saveAndFlush(user);
     }

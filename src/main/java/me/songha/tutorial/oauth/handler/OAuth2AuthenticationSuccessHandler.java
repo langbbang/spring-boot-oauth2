@@ -102,7 +102,10 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         if (userRefreshToken != null) {
             userRefreshToken.setRefreshToken(refreshToken.getToken());
         } else {
-            userRefreshToken = new UserRefreshToken(userInfo.getId(), refreshToken.getToken());
+            userRefreshToken = UserRefreshToken.builder()
+                    .userId(userInfo.getId())
+                    .refreshToken(refreshToken.getToken())
+                    .build();
             userRefreshTokenRepository.saveAndFlush(userRefreshToken);
         }
 

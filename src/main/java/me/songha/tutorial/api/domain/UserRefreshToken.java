@@ -2,6 +2,7 @@ package me.songha.tutorial.api.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -31,6 +32,7 @@ public class UserRefreshToken {
     @Size(max = 300)
     private String refreshToken;
 
+    @Builder
     public UserRefreshToken(
             @NotNull @Size(max = 64) String userId,
             @NotNull @Size(max = 256) String refreshToken
