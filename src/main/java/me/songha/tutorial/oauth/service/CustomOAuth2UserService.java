@@ -50,8 +50,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(providerType, user.getAttributes());
         User savedUser = userRepository.findByUserId(userInfo.getId());
 
+        // 이미 가입하였을 경우
         if (savedUser != null) {
-            if (providerType != savedUser.getProviderType()) {
+            if (providerType != savedUser.getProviderType()) { // providerType 이 입력값과 다르면 예외
                 throw new OAuthProviderMissMatchException(
                         "Looks like you're signed up with " + providerType +
                                 " account. Please use your " + savedUser.getProviderType() + " account to login."
@@ -76,16 +77,16 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 .roleType(RoleType.USER)
                 .build();
 
-        return userRepository.saveAndFlush(user);
+        return userRepository.saveAndFlush(user); // USERS 테이블에 저장
     }
 
-    private User updateUser(User user, OAuth2UserInfo userInfo) {
+    private User updateUser(User user, OAuth2UserInfo userInfo) { // 영속성 컨텍스트 속성을 이용하여 entity domain setter 통해 update
         if (userInfo.getName() != null && !user.getUsername().equals(userInfo.getName())) {
-            user.setUsername(userInfo.getName());
+            user.setUsername(userInfo.getName()); // username update
         }
 
         if (userInfo.getImageUrl() != null && !user.getProfileImageUrl().equals(userInfo.getImageUrl())) {
-            user.setProfileImageUrl(userInfo.getImageUrl());
+            user.setProfileImageUrl(userInfo.getImageUrl()); // imageUrl update
         }
 
         return user;
