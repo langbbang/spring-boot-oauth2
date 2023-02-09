@@ -8,6 +8,10 @@ import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequ
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * https://jyami.tistory.com/121
+ * Authorization request와 관련된 state는 authorizationRequestRepository 에 저장된다 (Security Config에 정의함)
+ */
 public class OAuth2AuthorizationRequestBasedOnCookieRepository implements AuthorizationRequestRepository<OAuth2AuthorizationRequest> {
 
     public final static String OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME = "oauth2_auth_request";
